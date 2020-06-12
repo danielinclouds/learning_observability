@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: go-latency-prom-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: go-latency-prom
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - go-latency-prom-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /latency
+    route:
+    - destination:
+        host: go-latency-prom
+        port:
+          number: 8080

@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-latency-prom
+  labels:
+    app: go-latency-prom
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: go-latency-prom
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-latency-prom
+  labels:
+    app: go-latency-prom
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-latency-prom
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
+      labels:
+        app: go-latency-prom
+    spec:
+      containers:
+      - name: go-latency-prom
+        image: docker.io/danielinclouds/go-latency-prom:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
