@@ -1,5 +1,5 @@
 
-# Learning SRE
+# Learning Observability
 Applications for playing with SRE concepts.  
 
 <app_name> - app with NO prometheus instrumentation
