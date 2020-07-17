@@ -26,8 +26,10 @@ spec:
   - match:
     - uri:
         prefix: /status
+    - uri:
+        prefix: /metrics
     route:
     - destination:
-        host: go-status-code
+        host: go-status-code-prom
         port:
           number: 8080
